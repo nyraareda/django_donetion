@@ -1,0 +1,113 @@
+{% extends 'layout/base.html' %}
+
+<style>
+  /* Apply background color gray to project list */
+  .project-list {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border: 2px solid black;
+  }
+  
+  /* Style for each project */
+  .project {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #050505;
+    border-radius: 5px;
+  }
+  
+  /* Style for the slider container */
+  .slider {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  /* Style for the images inside the slider */
+  .slider img {
+    display: inline-block;
+    width: 250px; 
+    height: 200px; /* Fixed height for images */
+    margin-right: 10px; /* Adjust spacing between images */
+  }
+  .checked {
+  color: gold; /* Change the color to gold for checked stars */
+}
+
+</style>
+
+{% block content %}
+  <h1 class="mt-4 mb-4">Your Fundraies</h1>
+
+  <!-- عرض قائمة المشاريع -->
+  <div class="container">
+    <div class="row">
+      {% for project in projects %}
+      <div class="col-lg-12 mb-4">
+        <div class="project card">
+          <div class="card-body" >
+            <h5 class="card-title">Project Name: {{ project.title }}</h5>
+            <h5 class="card-text">Project Description: {{ project.details }}</h5>
+            
+            <h5>Average Rating:<span id="user_rating">{{ project.calculate_average_rating }}</span></h5>
+            
+          
+
+            <!-- Slider container -->
+            <div class="slider" >
+              {% for picture in project.images.all %}
+              <img src="{{ picture.image.url }}" alt="Slider Image" class="img-fluid" style="width: 250px; height: 200px">
+          {% endfor %}
+          
+            </div>
+          <br>
+            <div>  <p><span style="font-size: 24px;">$</span><span style="font-size: 24px;">{{ project.total_target }}</span> <span style="font-size: 16px;" class="text-sm">goal</span></p>
+              <progress></progress></div>
+       
+          <form method="post" action="{% url 'viewPage:project_detail' project_id=project.id %}">
+            {% csrf_token %}
+              <button type="submit" class="btn btn-primary">View </button>
+              <a href="{% url 'viewPage:dashboard_user' project_id=project.id %}" class="btn btn-secondary">Manage</a>
+            </form>
+
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+{% endblock %}
+
+<script>
+  // Initialize the slider functionality
+  document.querySelectorAll('.slider').forEach(slider => {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    slider.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - slider.offsetLeft;
+      scrollLeft = slider.scrollLeft;
+    });
+    slider.addEventListener('mouseleave', () => {
+      isDown = false;
+    });
+    slider.addEventListener('mouseup', () => {
+      isDown = false;
+    });
+    slider.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 3; // Adjust the speed of sliding
+      slider.scrollLeft = scrollLeft - walk;
+    });
+  });
+
+
+  const userRating = parseInt(document.querySelector('#user_rating').innerText);
+const stars = document.querySelectorAll('.fa-star');
+
+</script>

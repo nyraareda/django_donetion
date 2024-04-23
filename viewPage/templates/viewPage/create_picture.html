@@ -1,0 +1,67 @@
+
+<!-- Modal -->
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<div class="modal fade" id="addPictureModal" tabindex="-1" role="dialog" aria-labelledby="addPictureModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                {% comment %} <h5 class="modal-title" id="addPictureModalLabel">Add Picture</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"> {% endcomment %}
+                    {% comment %} <span aria-hidden="true">&times;</span> {% endcomment %}
+                </button>
+                
+            </div>
+        
+        <div class="modal-body">
+            <div class="modal-body">
+                <div class="container">
+                    <div class="content">
+                        <div class="logo">
+                            <img src="https://cdn-icons-png.freepik.com/256/12357/12357114.png?ga=GA1.2.904843486.1702734146&semt=ais_hybrid" alt="Map of Palestine">
+                        </div>
+                
+                        <div class="image"></div>
+                
+                        <div class="text">
+                            Free Palestine & Free  <br>
+                            Free Palestine!
+                          </div>
+                    </div>
+                <form method="post" action="{% url 'Crowdfund:add_picture' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group" style="display: none;">
+                        <label for="projectSelect">Project Name:</label>
+                        <select class="form-control" id="projectSelect" name="project_id">
+                            {% if projects %}
+                                <option value="{{ projects.last.id }}" selected>{{ projects.last.title }}</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    
+                    <div class="image-container">
+                        <label for="images">Select Images:</label>
+                        <input type="file" name="images" id="previewImage" multiple accept="image/*" onchange="previewImage(event)">
+                    </div>
+
+
+        
+                    <button id="btn" type="submit">Next</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>  
+<script>
+    function previewImage(event) {
+        var input = event.target;
+        var container = document.getElementById("previewImage");
+        var reader = new FileReader();
+        reader.onload = function() {
+            var dataURL = reader.result;
+            container.src = dataURL;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+    
+</script>

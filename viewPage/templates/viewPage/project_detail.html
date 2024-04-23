@@ -1,0 +1,402 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/@splidejs/splide@3.0.9/dist/css/splide.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+<style>
+  body {
+    background-color: #f0f0f0; 
+    
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    
+  }
+
+  .project-container {
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: #fff; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+  }
+
+  
+  .project-container {
+    animation: fadeInUp 0.5s ease-in-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .section-divider {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+  }
+
+  .rating-list {
+    margin-top: 20px;
+  }
+
+  .rating-list li {
+    display: inline-block;
+    color: #ddd;
+    padding: 5px;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+  }
+
+  .rating-list li:hover,
+  .rating-list li.checked {
+    color: orange;
+  }
+
+  .comment-container {
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Light gray background color */
+  }
+
+  .comment-container:hover {
+    background-color: #f0f0f0; /* Darker gray background color on hover */
+  }
+
+  .reply-container {
+    margin-left: 20px;
+    border-left: 1px solid #ccc;
+    padding-left: 10px;
+  }
+
+  .reply-form {
+    margin-top: 10px;
+    margin-left: 20px;
+  }
+
+  .already-rated-message {
+    margin-top: 10px;
+    display: none;
+    color: green;
+    animation: fadeIn 1s forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .comment-card {
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+
+  .comment-card p {
+    margin-bottom: 5px;
+  }
+
+  .nested-comment {
+    margin-left: 20px;
+    border-left: 1px solid #eee;
+    padding-left: 10px;
+    margin-top: 5px;
+  }
+
+  .reply-form textarea {
+    width: 100%;
+    max-width: 400px;
+    height: 60px;
+  }
+
+  .comment-card .reply-form textarea {
+    max-width: 100px;
+  }
+
+  .comment-card .reply-form button {
+    margin-top: 5px;
+  }
+
+  .comment-card p,
+  .reply-container p {
+    margin-bottom: -2px;
+  }
+
+  .avatar_comment img {
+    width: 30px;
+    height: 30px;
+  }
+  textarea.form-control {
+    height: 40px;
+    width: 300px;
+}
+.btn:not(:disabled):not(.disabled) {
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+p {
+margin-top: 0;
+margin-bottom: auto;
+}
+.desc{
+  position:relative;
+}
+.desc form{
+  position:absolute;
+  bottom: 0px;
+  left: 900px;
+}
+li{
+    list-style-type: none;
+    color:#149954;
+    font-size:30Px;
+  }
+  li a{
+    style-direction:none;
+    color:#149954;
+  } 
+  li a:hover{
+    color:#0d6437;
+    text-decoration: none; 
+  }
+</style>
+
+<div class="project-container">
+  <h2>{{ project.title }}</h2>
+  <div class="section-divider"></div>
+
+  <span>Average Rating:<span id="user_rating">{{ project.calculate_average_rating }}</span></span>
+    <h5>
+      <span class="fa fa-star {% if project.average_rating > 0 %} checked {% endif %}"></span>
+      <span class="fa fa-star {% if project.average_rating > 1 %} checked {% endif %}"></span>
+      <span class="fa fa-star {% if project.average_rating > 2 %} checked {% endif %}"></span>
+      <span class="fa fa-star {% if project.average_rating > 3 %} checked {% endif %}" ></span>
+      <span class="fa fa-star {% if project.average_rating > 4 %} checked {% endif %}"></span>
+  </h5>
+  <div class="section-divider"></div>
+ <div class="splide">
+  <div class="splide__track">
+    <ul class="splide__list">
+      {% for picture in project.images.all %}
+        <li class="splide__slide">
+          <img src="{{ picture.image.url }}" alt="Slider Image" class="img-fluid" style="width: 1100px; height: 500px;">
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+<div class="section-divider"></div>
+<div class="desc">
+<h5>Project Description</h5>
+<p class="project-description">{{ project.details }}</p>
+{{user_id}}
+{{project}}
+<form method="post" action="{% url 'add_donation' project_id=project.id user_id=user_id  %}">
+  {% csrf_token %}
+  <input type="hidden" name="project_id" value="{{ project.id }}">
+  <button type="submit" class="btn btn-warning" >add donation</button>
+</form>
+</div>
+<div class="section-divider"></div>
+
+
+<form id="comment-form" method="post" action="{% url 'submit_comment' project_id=project.id user_id=user_id %}">
+{% csrf_token %}
+<div class="row">
+  <div class="avatar_comment col-md-1">
+    <img src="https://static.xx.fbcdn.net/rsrc.php/v1/yi/r/odA9sNLrE86.jpg" alt="avatar"/>
+  </div>
+  <div class="box_comment col-md-11">
+    <div class="form-group">
+      <label for="comment_content">Comment Content:</label>
+      <textarea class="form-control" id="comment_content" name="content" rows="4"></textarea>
+    </div>
+    <button type="submit" class="btn btn-success" >Submit Comment</button>
+  </div>
+</div>
+</form> 
+
+<div class="section-divider"></div>
+<h5>Comments</h5>
+<div id="comments-section">
+{% for comment in comments %}
+<div class="comment-container">
+  <div class="row">
+    <div class="avatar_comment col-md-1">
+      <img src="https://static.xx.fbcdn.net/rsrc.php/v1/yi/r/odA9sNLrE86.jpg" alt="avatar"/>
+    </div>
+    <div class="comment box_comment col-md-11">
+     
+      <p><strong> {{ comment.user.username }}</strong></p>
+      <p>{{ comment.content }}</p>
+     
+      <div class="tools_comment">
+        <a class="like" href="#" data-comment-id="{{ comment.id }}">Like</a><span aria-hidden="true"> · </span>
+        <i class="fa fa-thumbs-o-up"></i> <span class="count">0</span>
+        <span aria-hidden="true"> · </span>
+        <a class="reply" href="#" data-comment-id="{{ comment.id }}">Reply</a><span aria-hidden="true"> · </span>
+        <span>1m</span>
+      </div>
+    </div>
+  </div>
+  <div class="replies">
+    <h5>Replies</h5>
+    {% for reply in comment.replies.all %}
+    <div class="reply-container">
+      <div class="row">
+        <div class="avatar_comment col-md-1">
+          <img src="https://static.xx.fbcdn.net/rsrc.php/v1/yi/r/odA9sNLrE86.jpg" alt="avatar"/>
+        </div>
+        <div class="reply box_comment col-md-11">
+          
+          <p><strong> {{ reply.user.username }}</strong></p>
+          <p>{{ reply.content }}</p>
+          
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No replies yet.</p>
+    {% endfor %}
+  </div>
+  <div class="reply-form">
+    <h5>Reply to this comment</h5>
+    <form class="reply-comment-form" method="post" action="{% url 'submit_reply' project_id=project.id user_id=user_id  %}">
+      {% csrf_token %}
+      <input type="hidden" name="comment_id" value="{{ comment.id }}">
+      <div class="mb-3">
+        <label for="reply_content">Reply Content:</label>
+        <span class="text-danger">*</span>
+        <textarea class="form-control reply-content" name="content" rows="4"></textarea>
+      </div>
+      
+      <button type="submit" class="btn btn-success">Submit Reply</button>
+    </form>
+  </div>
+</div>
+{% empty %}
+<p>No comments yet.</p>
+{% endfor %}
+</div>
+
+<div class="section-divider"></div>
+
+
+<h5>Report Project</h5>
+<form method="post" action="{% url 'report_page' project_id=project.id user_id=user_id  %}">
+  {% csrf_token %}
+  <input type="hidden" name="project_id" value="{{ project.id }}">
+  <button type="submit" class="btn btn-danger">Report</button>
+</form>
+<div class="section-divider"></div>
+
+  <h5>Rate this project: </h5>
+<ul class="btn btn-light list-inline rating-list">
+  <li onclick="rate({{ user_id }}, {{ project.id }}, 5)">
+    <i class="fa fa-star {% if project.user_rating > 4 %} checked {% endif %}" title="Rate 5"></i>
+  </li>
+  <li onclick="rate({{ user_id }}, {{ project.id }}, 4)">
+    <i class="fa fa-star {% if project.user_rating > 3 %} checked {% endif %}" title="Rate 4"></i>
+  </li>
+  <li onclick="rate({{ user_id }}, {{ project.id }}, 3)">
+    <i class="fa fa-star {% if project.user_rating > 2 %} checked {% endif %}" title="Rate 3"></i>
+  </li>
+  <li onclick="rate({{ user_id }}, {{ project.id }}, 2)">
+    <i class="fa fa-star {% if project.user_rating > 1 %} checked {% endif %}" title="Rate 2"></i>
+  </li>
+  <li onclick="rate({{ user_id }}, {{ project.id }}, 1)">
+    <i class="fa fa-star {% if project.user_rating > 0 %} checked {% endif %}" title="Rate 1"></i>
+  </li>
+</ul>
+
+<div id="already_rated_message" style="display: none;">
+  You rated this project.
+</div>
+
+<div class="project-tags">
+  <ul>
+      {% for tag in project.tags.all %}
+      <li>#<a href="{% url 'similar_projects' project_id=project.id user_id=user_id tag_id=tag.id %}">{{ tag.name }}</a></li>
+      {% endfor %}
+  </ul>
+</div>
+</div>
+</div>
+
+
+<script src="https://unpkg.com/@splidejs/splide@3.0.9/dist/js/splide.min.js"></script>
+<script>
+  function rate(user_id,project_id,rating) {
+    fetch(`/accounts/home/${user_id}/project/${project_id}/rate/${rating}/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.success) {
+        location.reload();
+      } else {
+        console.error('Rating operation failed');
+      }
+    })
+    .catch(error => {
+      console.error('There was a problem with your fetch operation:', error);
+    });
+  }
+
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var splide = new Splide('.splide', {
+      type: 'fade', 
+      rewind: true, 
+      autoplay: true,
+      interval: 1000
+      
+    });
+    
+    splide.mount();
+  });
+
+  const userRating = parseInt(document.querySelector('#user_rating').innerText);
+  const stars = document.querySelectorAll('.fa-star');
+  stars.forEach((star, index) => {
+    if (index < userRating) {
+      star.classList.add('checked');
+    } else {
+      star.classList.remove('checked');
+    }
+  });
+
+  const alreadyRatedMessage = document.querySelector('#already_rated_message');
+  if (userRating > 0) {
+    alreadyRatedMessage.style.display = 'block';
+  } else {
+    alreadyRatedMessage.style.display = 'none';
+  }
+
+  
+</script>
+
+{% endblock %}

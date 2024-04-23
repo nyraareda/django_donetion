@@ -1,0 +1,91 @@
+{% extends 'layout/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Donation</title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa; 
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .donation-form {
+            background-color: #ffffff; 
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        #message {
+            display: none;
+            background-color: #ffffff; 
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        #submit-btn {
+            background-color: #007bff;
+            color: #ffffff; 
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #submit-btn:hover {
+            background-color: #0056b3; 
+        }
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h5>Add Donation to {{ project.title }}</h5>
+        <h5>Project ID: {{ project_id }}</h5>
+        <form id="donation-form" class="donation-form" method="post" action="{% url 'add_donation' project_id=project_id user_id=user_id%}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.amount.id_for_label }}">Amount</label>
+                <input type="number" class="form-control" id="{{ form.amount.id_for_label }}" name="{{ form.amount.html_name }}" min="1" step="0.01" required>
+            </div>
+            <button type="submit" id="submit-btn" class="btn btn-primary">Donate</button>
+        </form>
+
+        <div id="message">
+            <p>Thank you! We have already reached our goal.</p>
+        </div>
+    </div>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        window.onload = function() {
+            let form = document.getElementById("donation-form");
+            let currentFund = {{ project.current_fund }};
+            let totalTarget = {{ project.total_target }};
+            
+            if (currentFund >= totalTarget) {
+                form.style.display = "none";
+                message.style.display = "block"; 
+            }
+        }
+        document.getElementById("submit-btn").addEventListener("click", function(event) {
+        event.preventDefault();
+        
+        alert("Donation submitted! Thank You For your Donation ");
+    });
+    </script>
+
+</body>
+</html>
+{% endblock %}

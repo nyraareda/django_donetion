@@ -1,0 +1,139 @@
+{% load static %}
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .modal-backdrop {
+            display: none;
+        }
+
+        .modal-content {
+            box-shadow: 0 0 70px rgba(0, 0, 0, 0.3);
+        }
+
+
+        .form-group {
+    position: relative;
+    margin-bottom: 20px;
+    width: 80%;
+    margin-right: 2%;
+}
+
+.form-group:last-child {
+    margin-right: 0;
+}
+
+.form-group label {
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    color: #777;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    font-size: 15px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 30px 10px 20px 10px;
+    border: 2px solid #149954;
+    border-radius: 4px;
+    font-size: 13px; 
+
+}
+
+.form-group:focus-within label {
+    top: -10px;
+    left: 10px;
+    background-color: white;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #149954;
+    border-color: #149954;
+}
+
+.btn-primary{
+ background-color: #149954;
+ border-color: transparent;
+}
+
+.btn-primary:hover{
+ background-color: #034c1d;
+ border-color: transparent;
+}
+    </style>
+</head>
+
+<body>
+    <div class="modal fade" id="additionalInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Additional Information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="additionalInfoForm" method="POST" enctype="multipart/form-data" action="{% url 'add_additional_info' %}">                        {% csrf_token %}
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                        <div class="form-group">
+                            <label for="id_birth_date">Birth Date</label>
+                            <!-- Render form errors -->
+                            {% if form.birth_date.errors %}
+                            {% for error in form.birth_date.errors %}
+                            <div class="error-message">{{ error }}</div>
+                            {% endfor %}
+                            {% endif %}
+                            {{ form.birth_date }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_country">Country</label>
+                            <!-- Render form errors -->
+                            {% if form.country.errors %}
+                            {% for error in form.country.errors %}
+                            <div class="error-message">{{ error }}</div>
+                            {% endfor %}
+                            {% endif %}
+                            {{ form.country }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_facebook_profile">Facebook Profile</label>
+                            <!-- Render form errors -->
+                            {% if form.facebook_profile.errors %}
+                            {% for error in form.facebook_profile.errors %}
+                            <div class="error-message">{{ error }}</div>
+                            {% endfor %}
+                            {% endif %}
+                            {{ form.facebook_profile }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    var $j = jQuery.noConflict();
+    $j(document).ready(function() {
+        // Your jQuery code using $j instead of $
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'mainApp/css/register.css' %}" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("{% static 'mainApp/img/back.jpg' %}");
+            height: 100vh;
+        }
+
+        .frist {
+            background-image: url("{% static 'mainApp/img/mosque.jpg' %}");
+            height: 38vh;
+        }
+        .sec{
+            height: 60vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="frist">
+        <h2>Join Us</h2>
+    </div>
+    <div class="sec">
+        <form method="post" action="{% url 'user_create_form' %}" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">Username</label>
+                {{ form.username }}
+                {% for error in form.username.errors %}
+                <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <label for="id_first_name">First Name</label>
+                {{ form.first_name }}
+                {% for error in form.first_name.errors %}
+                <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <label for="id_last_name">Last Name</label>
+                {{ form.last_name }}
+                {% for error in form.last_name.errors %}
+                <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <label for="id_email">Email</label>
+                {{ form.email }}
+                {% for error in form.email.errors %}
+                <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <label for="id_password">Password</label>
+                    {{form.password}}
+                {% for error in form.password.errors %}
+                <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                <label for="id_confirm_password">Confirm Password</label>
+                {{ form.confirm_password }}
+                {% for error in form.confirm_password.errors %}
+                <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+            
+            <div class="form-group">
+                <div class="input-group">
+                    {{ form.phone_number }}
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">+20</span>
+                    </div>
+                </div>
+                {% for error in form.phone_number.errors %}
+                <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+            
+            
+            <div class="form-group">
+                {{ form.profile_picture }}
+                {% for error in form.profile_picture.errors %}
+                <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+            <div class="form-submit-group">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('input, textarea, select').forEach(function(input) {
+                input.removeAttribute('required');
+            });
+
+    
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

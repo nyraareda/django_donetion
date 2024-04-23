@@ -1,0 +1,39 @@
+{% extends 'layout/main.html' %}
+{% load static %}
+
+{% block title %} Admin {% endblock %}
+{%block nav%}
+{%endblock%}
+{% block content %}
+<div class="admin-welcome py-2">
+    <div class="container-fluid">
+        <!-- Category Creation Section -->
+        <div class="row category-section bg-light text-start p-3 m-4">
+            <h2>Create Category</h2>
+            <div class="all-categories">
+                <h3>All Categories</h3>
+                {% for category in categories %}
+                <div>
+                    <i class="{{ category.icon_class }}"></i>
+                    {{ category.name }}
+                </div>
+                {% endfor %}
+            </div>
+            <form method="post" id="categoryForm">
+                {% csrf_token %}
+                <input type="hidden" name="view_type" value="add_category" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="id_name">Name:</label>
+                     {{ form.name }}
+                     <small class="form-text text-muted">Enter category name.</small>
+                     {{ form.name.errors }}
+                </div>
+               
+                <button type="submit" class="btn btn-primary">Save Category</button>
+            </form>
+        </div>
+       
+    </div>
+
+      
+{% endblock %}

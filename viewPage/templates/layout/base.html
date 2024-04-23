@@ -1,0 +1,37 @@
+<!-- layout/base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Add your CSS and JS files here -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+</head>
+<body>
+  <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+  </nav> -->
+
+  <div class="container">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+  <!-- JavaScript for Slick slider initialization -->
+  <script>
+    $(document).ready(function(){
+        $('.slider').slick({
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 1000,
+          });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+body,
+html {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Libre Baskerville", serif;
+    font-weight: 500;
+    font-style: normal;
+}
+body{
+
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+}
+.container{
+    background-color: white;
+    max-width:50% !important;
+    height: 100%;
+    position: relative;
+    z-index: 1; 
+    box-shadow: 0 0 70px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
+    align-items:center;
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 15, 8, 0.5); /* Adjust the alpha value to control the opacity */
+}
+
+.content{
+    width: 100%;
+    margin-top: 30px;
+    line-height: 50px;
+    margin-left: 40px;
+}
+.buttons ,.links{
+    position: absolute;
+    left: 200px;
+    top :500px;
+    background-color: red;
+}
+.links{
+    margin-top: 60px;
+    left: 510px;
+}
+
+.edit ,.logout{
+    background-color:#149954;
+    color: white;
+    border: none;
+    padding: 10px 35px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete {
+    background-color: #034c1d;
+    color: white;
+    border: none;
+    padding: 10px 35px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.links a{
+    color: rgb(110, 147, 114);
+}
+
+.links a:hover{
+    color: rgb(50, 110, 55);
+    text-decoration: none;
+}
+.edit a:hover{
+    color: rgb(50, 110, 55);
+    text-decoration: none;
+}
+.text{
+    color:#009736
+
+}
+

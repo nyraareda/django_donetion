@@ -1,0 +1,181 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'mainApp/css/profile.css' %}" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("{% static 'mainApp/img/olive.jpg' %}");
+            position: relative;
+        }
+ 
+        .frist img {
+            margin-bottom: 30px;
+            border-radius: 50%;
+            width: 240px;
+            height: 240px;
+            box-shadow: 0 0 70px rgba(0, 0, 0, 0.3);
+            margin: 0;
+            padding: 0;
+            border: 4px solid #fff;
+        }
+
+        .frist img:hover {
+            animation: borderChange 0.8s ease forwards;
+        }
+
+        @keyframes borderChange {
+            0% {
+                border-color: #fff;
+            }
+
+            100% {
+                border-color: rgb(50, 110, 55);
+            }
+        }
+        .edit ,.logout{
+    color: white;
+    border: none;
+    padding: 10px 35px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.logout{
+    background-color:#128d4d;
+}
+        .buttons,
+        .links {
+            position: absolute;
+            left: 300px;
+            top: 500px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            background-color: transparent;
+        }
+
+        .delete {
+            margin-left: 20px;
+        } 
+        a:hover{
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="content">
+            <div class="frist">
+                {% if user.profile_picture %}
+                <img src="{{ user.profile_picture_url }}" alt="Profile Picture">
+                {% else %}
+                <!-- If profile picture is not available, display a placeholder image -->
+                <img src="{% static 'path/to/placeholder/image.jpg' %}" alt="Placeholder Image">
+                {% endif %}
+            </div>
+            {% if user %}
+            <h2>FullName: {{ user.first_name }} {{ user.last_name }}</h2>
+            <p>Email: {{ user.email }}</p>
+            {% if user.phone_number %}
+            <p>Phone Number: {{ user.phone_number }}</p>
+            {% endif %}
+            {% else %}
+            <p>User not available</p>
+            {% endif %}
+        </div>
+        <div class="buttons">
+            <a href="{% url 'edit_profile' user.id %}" class="edit">Edit</a>
+            <form id="logoutForm" action="{% url 'custom_logout' user.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="logout">Logout</button>
+            </form>
+            <form id="deleteButtonForm" method="post">
+                <button type="button" id="deleteButton" class="delete">Delete Account</button>
+            </form>
+        </div>
+        <div class="links">
+            <a href="#" data-toggle="modal" data-target="#additionalInfoModal">Add more information?</a>
+        </div>
+
+<div id="passwordModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Please enter your password to confirm deletion:</p>
+                <form method="post" action="{% url 'delete_account' user.id %}">
+                    {% csrf_token %}
+                    <input type="password" class="form-control" name="password" placeholder="Password">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <!-- Change to type="submit" to submit the form -->
+                <button type="submit" class="btn btn-danger">Confirm Deletion</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    {% include 'accounts/additional_info_form.html' %}
+    <script>
+        document.getElementById('deleteButton').addEventListener('click', function () {
+            $('#passwordModal').modal('show');
+            
+            var userId = "{{ user.id }}";
+            document.getElementById('userIdInput').value = userId;
+        });
+    
+        document.getElementById('confirmDeleteButton').addEventListener('click', function () {
+            var password = document.getElementById('deletePasswordInput').value;
+            
+            var formData = new FormData(document.getElementById('deleteForm'));
+    
+            fetch('{% url "delete_account" user.id%}', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data,userId); // Log the JSON response to the console
+                if (data.success) {
+
+                    window.location.href = "{% url 'login' %}";
+                } else {
+            
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

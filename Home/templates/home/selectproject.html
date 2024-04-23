@@ -1,0 +1,53 @@
+{% extends 'layout/main.html' %}
+{% load static %}
+
+{% block title %} Admin {% endblock %}
+{%block nav%}
+{%endblock%}
+{% block content %}
+<div class="admin-welcome py-2">
+    <div class="container-fluid">
+        <div class="row project-selection-section bg-light text-start p-3 m-4">
+            <h2>Select Projects only 5 projects </h2>
+            <form method="post" id="projectForm">
+                {% csrf_token %}
+                <input type="hidden" name="view_type" value="select_projects" enctype="multipart/form-data">
+                <ul>
+                    {% for project in projects %}
+                    <li>
+                        <input type="checkbox" name="selected_projects" value="{{ project.id }}">
+                        <label>{{ project.title }}</label>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <button type="submit">Select Projects</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("projectForm");
+    const checkboxes = form.querySelectorAll("input[type='checkbox']");
+    const maxSelections = 5;
+
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener("change", function() {
+            const checkedCount = form.querySelectorAll("input[type='checkbox']:checked").length;
+            if (checkedCount >= maxSelections) {
+                checkboxes.forEach(function(cb) {
+                    if (!cb.checked) {
+                        cb.disabled = true;
+                    }
+                });
+            } else {
+                checkboxes.forEach(function(cb) {
+                    cb.disabled = false;
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

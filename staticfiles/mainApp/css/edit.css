@@ -1,0 +1,202 @@
+
+html {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    background-image: url("{% static 'mainApp/img/background.jpg' %}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: "Libre Baskerville", serif;
+    font-weight: 500;
+    font-style: normal;
+    
+}
+
+.flip-card {
+    margin: auto;
+    background-color: white;
+    width: 70%;
+    margin-top: 20px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+    height: 650px;
+}
+
+        input[name="email"] {
+            pointer-events: none;
+            background-color: #f2f2f2;
+            /* Change the background color to visually indicate that the field is disabled */
+        }
+
+        input[name="profile_picture-clear"],
+        a {
+            display: none;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+            width: 50%;
+            margin-right: 2%;
+        }
+
+        .form-group:last-child {
+            margin-right: 0;
+        }
+
+        .form-group label {
+            position: absolute;
+            left: 10px;
+            top: 5px;
+            color: #777;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            font-size: 15px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 25px 10px 5px 10px;
+            border: 2px solid #149954;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        .form-group:focus-within label {
+            top: -10px;
+            left: 10px;
+            background-color: white;
+            padding: 0 5px;
+            font-size: 12px;
+            color: #149954;
+            border-color: #149954;
+        }
+
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 0px;
+            height: 55px;
+            border: 2px solid #149954;
+            background-color: transparent;
+            overflow: hidden;
+        }
+        .form-group input[type="file"]::-webkit-file-upload-button {
+            background-color: #149954;
+            height: 100%;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            color: white;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            border-color: transparent;
+        }
+
+        .form-group input[type="file"]::-webkit-file-upload-button:hover {
+            background-color: #0f7c47;
+        }
+
+        .form-group input[type="file"]::placeholder {
+            margin-left: 100px;
+        }
+
+        .form-group input:focus::placeholder {
+            display: none;
+            /* Hide placeholder text when input is focused */
+        }
+
+        .container {
+            width: 100%;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button {
+            background-color: #034c1d;
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+  .flip-card {
+  width: 50%;
+  /* height: 100%; */
+  perspective: 1000px; /* Enable 3D effects */
+}
+
+.flip-card-front, .flip-card-back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  border-radius: 30px;
+}
+
+.flip-card-front {
+  color: black;
+}
+
+.flip-card-back {
+  /* background-color: rgb(82, 144, 89); */
+  transform: rotateY(180deg);
+  color: white;
+}
+.flip-card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg); /* Initial state: facing front */
+}
+
+.flipped .flip-card-inner {
+  transform: rotateY(180deg); /* When flipped, rotate to show the back */
+}
+.arrow {
+    cursor: pointer;
+    left: 400px;
+    top:-100px;
+    position: absolute;
+    background-color:rgb(173, 3, 3);
+    color: white;
+    padding: 10px 30px;
+    border-radius: 4px;
+    position: relative;
+
+}
+.arrow::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -20px; 
+    width: 0;
+    height: 0;
+    border-top: 27px solid transparent;
+    border-bottom: 27px solid transparent;
+    border-left: 22px solid rgb(173, 3, 3);; 
+    transform: translateY(-50%);
+}
+.img img{
+            margin-bottom: 30px;
+            border-radius: 50%;
+            width: 240px;
+            height: 240px;
+            box-shadow: 0 0 70px rgba(0, 0, 0, 0.3);
+            margin: 0;
+            padding: 0;
+            border: 4px solid #fff;
+        }

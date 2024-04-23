@@ -1,0 +1,177 @@
+body,
+html {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    background-image: url("{% static 'mainApp/img/background.jpg' %}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: "Libre Baskerville", serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.frist {
+    background-image: url("{% static 'mainApp/img/mosque.jpg' %}");
+    height: 45vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.frist h2 {
+    background-color: white;
+    border-radius: 40px;
+    width: 80%;
+    text-align: center;
+    padding: 15px;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.sec {
+    height: 55vh;
+    background-color: white;
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    display: inline-block;
+    width: 30%;
+    margin-right: 2%;
+
+}
+
+.form-group:last-child {
+    margin-right: 0;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    color: #777;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    font-size: 15px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 25px 10px 5px 10px;
+    border: 2px solid #149954;
+    border-radius: 4px;
+    text-align: center;
+}
+
+
+.form-group:focus-within label {
+    top: -10px;
+    left: 10px;
+    background-color: white;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #149954;
+    border-color: #149954;
+}
+
+
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 0px;
+    height: 55px;
+    border: 2px solid #149954;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.form-group input[type="file"]::-webkit-file-upload-button {
+    background-color: #149954;
+    height: 100%;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    color: white;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border-color: transparent;
+}
+
+.form-group input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #0f7c47;
+}
+
+.form-group input[type="file"]::placeholder {
+    margin-left: 100px;
+}
+
+.btn-primary {
+    background-color: #149954;
+    width: 16%;
+    padding: 10px;
+    margin-bottom: 20px !important;
+}
+
+.btn-primary:hover {
+    background-color: #0f7c47;
+}
+.form-submit-group {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+   
+}
+.error-message{
+    color: red;
+    font-size: 15px;
+}
+.input-group-text {
+    background-color: #149954; /* Green background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    padding: 5px; /* Adjust padding as needed */
+    border-radius: 10px; /* Add border radius */
+    height: 56px;
+    margin-left:1px;
+}
+
+.form-group .input-group .input-group-prepend {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+#id_password, #id_confirm_password{
+    width: 100%;
+    padding: 25px 10px 5px 10px;
+    border: 2px solid #149954;
+    border-radius: 4px;
+    text-align: center;
+    height: 3rem;
+}
+
+.form-group input:focus {
+    border-color: #149954 !important;
+}

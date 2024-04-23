@@ -1,0 +1,35 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Activated</title>
+                    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'mainApp/css/activate.css' %}" rel="stylesheet">
+    <style>
+    .frist {
+        background-image: url("{% static 'mainApp/img/email.jpg' %}");
+    }  
+    </style> 
+</head>
+<body class="container">
+    <div class="frist"></div>
+    <div class="sec">
+        <h1>Activation Email Sent</h1>
+        <p>An activation email has been sent to 
+            <a href="mailto:{{ email }}" class="email">{{ email }}</a>.
+            <br/>
+            Please check your email inbox and follow the instructions to activate your account.
+        </p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

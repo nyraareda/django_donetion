@@ -1,0 +1,310 @@
+{% extends 'layout/main.html' %}
+
+{%load static %}
+
+{% block title %} Home {%endblock%}
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bolder" >gofund</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav  w-100 gap-5  ms-5 align-items-center ">
+                 {% if user_name %}
+
+                 <a href="#latest-project" ">latest project</a>
+                <a class="nav-link bg-dark text-light rounded-5" style="border-radius: 1.2rem;
+                text-align: center;" href="#">{{ user_name.username }}</a>
+                {% else %}
+                    <a class="nav-link bg-dark text-light rounded-5" style="border-radius: 1.2rem;
+                    text-align: center;" href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+{% block container%}
+
+    <div class="col-sm-12 col-md-5 hero-left p-5 text-light">
+        <h1 class="mb-4">Go Funding</h1>
+       <div class="quote d-flex flex-row align-items-center gap-2">
+        <i class="fa-solid fa-quote-right quote-right"></i>    
+        <p class="p-0 mb-0">The problem is that rich are getting richer by not giving and poor and getting poorer by not receiving.</p>
+   
+   </div>
+    </div>
+    <div class="col-sm-12 col-md-6 hero-right">
+        <div class="swiper mySwiper swiper-index">
+            <div class="swiper-wrapper">
+                {% for project in top_rated_projects %}
+              <div class="swiper-slide slider-index p-4 d-flex flex-row  align-items-center ">
+                <div class="project-information text-capitalize">
+                    <h1 class="project-title ">{{project.title}}</h1>
+                    <p class="project-details">{{ project.details }}</p>                   
+                     <div class="funding-details d-flex justify-content-between flex-column">
+                        <p class="funding funding-current">current funding : <span>${{ project.current_fund }}</span></p>
+                        <p class="funding funding-target">Total funding : <span>${{ project.total_target }}</span></p>
+                    </div>
+                    <div class="project-timing d-flex gap-2 align-items-center my-2">
+                        <i class="fa-regular fa-clock "></i>
+                        <p class="selected-date-start mb-0">{{ project.start_date }}</p>
+                        <p class="selected-date-end mb-0">{{ project.end_date }}</p>
+                    </div>
+                    <p>Creator: {{ project.creator_username }}</p>
+                </div>
+              </div>
+              {% endfor %}
+              
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+    </div>  
+
+{% endblock %}
+{% block content%}
+
+        <div class="col-sm-12 col-md-6">
+            <div class="support-right d-grid">
+                <div class="support-image second-image">
+                    <img src="{% static 'Homeapp/images/support1.jpg' %}" class="img-fluid " alt=".">
+                </div>
+                <div class="support-image third-image">
+                    <img src="{% static 'Homeapp/images/support2.jpg' %}" class="img-fluid " alt=".">
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 d-flex align-items-center">
+            <div class="support-left m-2">
+                <div class="support-details p-5">
+                    <h2>YOUR SUPPORT IS REALLY POWERFUL.</h2>
+                    <p>There are many variations of passages of Lorem Ipsum avarible . but the
+                        majority have suffered alteration in some from by injected humour por
+                        randomised words whichj dont 100k even slightly believable. if you are going to</p>
+                </div>
+                <div class="total-donation d-sm-none d-md-block">
+                   <div class="total-donation-container">
+                    <div class="total-donation-count text-center">
+                        <div class="total-donation-count-icon">
+                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                        </div>
+                        <div class="total-donation-content text-light d-flex flex-column justify-content-center align-items-center">
+                            <div class="total-donation-content-number">
+                                <span>250k+</span>
+                            </div>
+                            <h3 class="total-donation-content-title text-uppercase">
+                                totla donation
+                            </h3>
+                        </div>
+                    </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
+{% block body %}
+<!-- list of latest 5 projects -->
+<div class="latest-project p-5" id="latest-project">
+    <div class="row">
+       <div class="latest-project-header my-3">
+        <h1>latest Fundings Projects </h1>
+        <p>give hope, chagne lives, spead love </p>
+        </div>
+        <div class="col-12 my-2">
+            <div class="row justify-content-start ">
+                {% for project  in projects %}
+                <div class="col-sm-12 col-md-4  my-4 p-4 latest-project-col">
+                    <div class="card latest-project-card">
+                        <div class="latest-project-image ">
+                            
+                            <div class="swiper mySwiper swiper_project_image">
+                                <div class="swiper-wrapper swiper_project_image_wrapper">
+                                    {% for picture in project.images.all %}
+                                  <div class="swiper-slide swiper_project_slider">
+                                     <img src="{{ picture.image.url }}" alt="{{project.title}}" class="img-fluid" >
+                                  </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="swiper-pagination swiper_project_pagination"></div>
+                            </div>
+                                                  
+                        </div> 
+                        <div class="card-body text-start d-flex flex-column">
+                            <h5 class="card-title fw-bold">{{ project.title }}</h5>
+                            <p class="card-text latest-text">{{ project.details }}</p>
+                            <div class="latest-project-card-funding">
+                                <div class="progress latest-project-progress mb-3">
+                                    <div class="progress-bar" style="width:{{ project.progress_percentage}}%;" role="progressbar" 
+                                        aria-valuenow="{{ project.progress_percentage }}" aria-valuemin="0" aria-valuemax="100">
+                                        {{ project.progress_percentage }}%
+                                    </div>
+                                </div>
+                                
+                                <div class="latest-funding-details my-2 d-flex flex-column align-items-baseline">
+                                    <div class="latest-funding-total d-flex gap-2">
+                                        <p class="m-0">Raised</p><span>{{ project.current_fund }}$</span>
+                                    </div>
+                                    <div class="latest-funding-current d-flex gap-2 "">
+                                        <p class="m-0">target</p><span>{{ project.total_target }}$</span>
+                                    </div>
+                                    <ul class="d-flex flex-row flex-wrap p-0 m-2 project-imag-ul">
+                                        {% for tag in project.tags.all %}
+                                        <li >{{ tag.name }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    
+                                </div>
+                            </div>
+                            <div class="latest-project-card-timing d-flex gap-1 align-items-center my-2">
+                                <i class="fa-regular fa-clock latest-time"></i>
+                                <p class="m-0">From <span class="latest-project-start-date">{{ project.start_date }}</span> till <span class="latest-project-end-data">{{ project.end_date }}</span></p>
+                            </div>
+                        
+                            {% if user_name %}
+                                <a href="{% url 'project.detail' user_id=user_id  project_id=project.id %}" class="btn btn-primary w-75 mx-auto my-3 btn-latest-project">View Details</a>
+                            {% else %}
+                                <a href="#" class="btn btn-primary w-75 mx-auto my-3 btn-latest-project disabled" title="Login required">View Details</a>
+                            {% endif %}
+                         </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block block-conatiner %}<div class="category-section my-5" id="find-category">
+    <h1>Fund Me Categories</h1>
+    <div class="container-fluid">
+        <div class="row gx-0 gap-3 m-4">
+            <ul class="nav nav-pills gap-4">
+                <li class="nav-item">
+                    <a href="?category=" class="nav-link category-nav-link m-0">All projects</a>
+                </li>        
+                {% for category in categories %}
+                <li class="nav-item">
+                    <a href="?category={{ category.id }}" class="nav-link category-nav-link m-0">{{ category.name }}</a>
+                </li> 
+                {% endfor %}
+            </ul>
+            <form action="" method="get" class="d-flex justify-content-end">
+                <input class="form-control me-2 input-category-search" name="search" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success btn-category-search" type="submit">Search</button>
+            </form>
+        </div>
+        <div class="row gx-0">
+            <div class="row gx-0 justify-content-start" id="project-gallery">
+                {% if allProject %}
+                {% for project in allProject %}
+    <div class="col-sm-12 col-md-4 my-3 p-4 text-center project-item" data-category="{{ project.category.id }}">
+        <div class="category-all-project d-flex flex-column">
+            <div class="swiper mySwiper swiper_project_image">
+                <div class="swiper-wrapper swiper_project_image_wrapper">
+                    {% for picture in project.images.all %}
+                        <div class="swiper-slide swiper_project_slider">
+                            <img src="{{ picture.image.url }}" alt="{{ project.title }}" class="img-fluid">
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-pagination swiper_project_pagination"></div>
+            </div>
+
+            <div class="category-all-details my-2">
+                <h4>{{ project.title }}</h4>
+                <p>{{ project.details }}</p>
+                {% if project.category.name %}
+                    <span class="category-search">{{ project.category.name }}</span>
+                {% else %}
+                    <span class="category-search">no category</span>
+                {% endif %}
+            </div>
+            <div class="category-all-fund">
+                <p>raised:<span class="categroy-all-currentfund"> {{ project.current_fund }} </span></p>
+                <p>Target: <span class="categrory-all-totalfund">{{ project.total_target }} $</span></p>
+            </div>
+            <div class="category-all-time d-flex align-items-center gap-2 my-2">
+                <i class="fa-regular fa-clock "></i>
+                <p class="selected-date-start mb-0">{{ project.start_date }}</p>
+                <p class="selected-date-end mb-0">{{ project.end_date }}</p>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+                {% else %}
+                <div class="col-lg-12 text-center my-2 category-error" >
+                    {% if search_query %}
+                    <p>Sorry! No projects found for {{ search_query }}.</p>
+                    {% else %}
+                    <p>Sorry! There are no projects in this category.</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block block-content %}
+    <div class="selected-section p-5" id="selected-project">
+        <h1 class="m-4">Selected Projects</h1>
+        <div class="container-fluid my-2">
+            <div class="row  justify-content-start  py-4 main-row-selected-project" >
+                {% for selected_project in selected_projects %}
+                <div class="col-sm-12 col-md-4 my-2  text-start "> 
+                    <div class="selected-project  d-flex flex-column justify-content-end p-3" id="swiper-container">
+                        <div class="swiper mySwiper swiper_project_image ">
+                            <div class="swiper-wrapper  swiper_project_image_wrapper">
+                                {% for picture in selected_project.images.all %}
+                                    <div class="swiper-slide swiper_project_slider">
+                                        <img src="{{ picture.image.url }}" alt="{{ project.title }}" class="img-fluid">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        <!-- Add Pagination -->
+                        <div class="swiper-pagination"></div>
+                        </div>
+                      <div class="selected-details p-3 my-3 d-flex flex-column">
+                        <h5 class="fw-bold">{{ selected_project.title }}</h5>
+                        <p class="mb-1">{{ selected_project.details }}</p>
+                       <div class="selected-details-fund d-flex flex-column gap-2">
+                            <p class="mb-0 ">Raised: {{ selected_project.current_fund }}</p>
+                            <p class="mb-0">Target: {{ selected_project.total_target }}</p>
+                       </div>
+                        <div class="selected-details-time d-flex align-items-center gap-2 my-2">
+                            <i class="fa-regular fa-clock "></i>
+                            <p class="selected-date-start mb-0">{{ selected_project.start_date }}</p>
+                            <p class="selected-date-end mb-0">{{ selected_project.end_date }}</p>
+                        </div>
+                      </div>
+                   </div>   
+                </div>
+               {% endfor %}
+            </div>
+        </div>
+            
+</div>
+{% endblock %}
+<script>
+    var swiper = new Swiper('.selected-project', {
+        loop: true,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+    });
+
+    // Set background image dynamically
+    var firstSlideImage = document.querySelector('#swiper-container .swiper-slide img').src;
+    document.querySelector('.selected-project').style.backgroundImage = "url('" + firstSlideImage + "')";
+</script>

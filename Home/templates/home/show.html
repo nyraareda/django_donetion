@@ -1,0 +1,81 @@
+{% extends 'layout/main.html' %}
+{% load static %}
+
+{% block title %} Project Details {% endblock %}
+
+{%block nav%}
+{%endblock%}
+
+{% block content %}
+<div class="container project-show  ">
+    <h1 class="text-center py-4">Project details</h1>
+    <div class="d-flex flex-row flex-wrap p-5 align-items-center justify-content-center overflow-hidden "style="gap:3rem">
+        <div class="col-sm-12 col-md-5 my-1">
+            <div class="right-container">
+            <div class="left-show-container">
+                <div class="swiper mySwiper swiper_project_image">
+                    <div class="swiper-wrapper swiper_project_image_wrapper">
+                        {% for picture in project.images.all %}
+                            <div class="swiper-slide swiper_project_slider_show">
+                                <img src="{{ picture.image.url }}" alt="{{ project.title }}" class="img-fluid">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-pagination swiper_project_pagination"></div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="col-sm-12 col-md-5 my-1">
+            <div class="left-container">
+                <div class="card latest-project-card">
+                  
+                    <div class="card-body text-start d-flex flex-column">
+                        <h5 class="card-title fw-bold">{{ project.title }}</h5>
+                        <p class="card-text latest-text">{{ project.details }}</p>
+                        <div class="latest-project-card-funding">
+                            <div class="progress latest-project-progress mb-3">
+                                <div class="progress-bar" style="width:{{ project.progress_percentage}}%;" role="progressbar" 
+                                    aria-valuenow="{{ project.progress_percentage }}" aria-valuemin="0" aria-valuemax="100">
+                                    {{ project.progress_percentage }}%
+                                </div>
+                            </div>
+                            
+                            <div class="latest-funding-details my-2 d-flex flex-column align-items-baseline">
+                                <div class="latest-funding-total d-flex gap-2">
+                                    <p class="m-0">Raised</p><span>{{ project.current_fund }}$</span>
+                                </div>
+                                <div class="latest-funding-current d-flex gap-2 "">
+                                    <p class="m-0">target</p><span>{{ project.total_target }}$</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="latest-project-card-timing d-flex gap-1 align-items-center my-2">
+                            <i class="fa-regular fa-clock latest-time"></i>
+                            <p class="m-0">From <span class="latest-project-start-date">{{ project.start_date }}</span> till <span class="latest-project-end-data">{{ project.end_date }}</span></p>
+                        </div>
+                        <a  class="btn btn-primary w-75 mx-auto my-3 btn-latest-project" href="{% url 'add_donation' user_id=user_id project_id=project.id%}">Donate Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script>
+    var swiper = new Swiper(".swiper_project_image", {
+  autoplay: {
+    delay: 2500,
+    disableOnInteraction: false,
+  },
+  pagination: {
+    el: ".swiper-pagination",
+    clickable: true,
+    
+    renderBullet: function (index, className) {
+      return '<span class="' + className +'">' + (index + 1) + "</span>";
+    },
+  },
+});
+</script>
+{%endblock%}

@@ -1,0 +1,73 @@
+{% extends 'layout/main.html' %}
+
+{%load static %}
+
+{% block title %} admin {%endblock%}
+
+{%block nav%}
+{%endblock%}
+{% block container%}
+<h1 class="text-center fw-bolder" >All Projects</h1>
+<div class="conatiner-fluid">
+   <div class="row justify-content-evenly">
+
+    <a href="{% url 'create_project' user.id %}" class="btn btn-primary my-3 w-25 ">Create project</a>
+    <a href="{% url 'select_project' user.id %}" class="btn btn-danger my-3  w-25 ">select 5 featured Project</a>
+   </div>
+   
+    <table class="table table-dark table-hover table-striped ">
+        <thead>
+            <tr class="text-center">
+              <th>ttile</th>
+              <th>details</th>
+              <th>Raised</th>
+              <th>target</th>
+              <th>start date</th>
+              <th>end date</th>
+              <th colspan="3"> action</th>
+            </tr>
+            <tbody>    
+                {% for project in projects%}
+                <tr>
+                  <td>{{project.title}}</td>
+                  <td>{{project.details}}</td>
+                  <td>{{project.current_fund}}</td>
+                  <td>{{project.total_target}}</td>
+                  <td>{{project.start_date }}</td>
+                  <td>{{project.end_date }}</td>
+                  <td><a href="{% url 'project_detail' project_id=project.id user_id=user.id%}" class="btn btn-primary">show</a></td>
+                  <td><a href="{% url 'update_project' user_id=user.id pk=project.id %}" class="btn btn-warning">edit</a></td>
+                  <td><a href="{% url 'delete_project' user_id=user.id project_id=project.id %}" class="btn btn-danger">delete</a></td>
+                </tr>
+                {%endfor%}
+              </tbody>
+          </thead>
+    </table>
+</div>
+{%endblock%}
+{% block content %}
+<h1 class="text-center fw-bolder" >All category</h1>
+<a href="{% url 'create_category' user.id %}" class="btn btn-primary my-3 w-25 ">Create category</a>
+<div class="conatiner">
+    <table class="table  table-dark table-hover table-striped ">
+        <thead>
+            <tr class="text-center">
+              <th>name</th>
+              <th colspan="2"> action</th>
+            </tr>
+            <tbody>    
+                {% for category in categories%}
+                <tr>
+                    <td>
+                        {{ category.name }}
+                    </td>
+                    <td><a href="{% url 'categroy_update' user_id=user.id category_id=category.id %}" class="btn btn-warning">edit</a></td>
+                    <td><a href="{% url 'category_delete' user_id=user.id category_id=category.id%}" class="btn btn-danger">delete</a></td>
+                 
+                </tr>  
+                {% endfor %}
+              </tbody>
+          </thead>
+    </table>
+</div>
+{% endblock %}

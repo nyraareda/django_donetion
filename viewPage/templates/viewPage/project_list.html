@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project List</title>
+
+</head>
+<body>
+    <h1>Project List</h1>
+    {% if projects %} 
+        {% for project in projects %}
+            <div class="project">
+                <h3>{{ project.title }}</h3>
+                <p><strong>Details:</strong> {{ project.details }}</p>
+                <p><strong>Current Fund:</strong> {{ project.current_fund }}</p>
+                <p><strong>Total Target:</strong> {{ project.total_target }}</p>
+                <!-- Any other information you want to display -->
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No projects available.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,364 @@
+{% comment %} {% extends 'base.html' %} {% endcomment %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Project</title>
+{% comment %} <link rel="stylesheet" href="{% static 'css/style.css' %}"> {% endcomment %}
+<style>
+  /* Resetting default styles */
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    /* Setting body font */
+    body {
+      {% comment %} background-image: url(/static/mainApp/img/back.jpg); {% endcomment %}
+      font-family: sans-serif;
+      transform: scale(0.9);
+  }
+  
+  /* Container for form and content */
+  .container {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  /* Content section */
+  .content {
+    flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      background-color: #149954;
+      width: 55%;
+      min-height: 100vh;
+      padding: 70px 30px;
+      
+  }
+  
+  /* Background image */
+  .image {
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      height: 65%;
+  }
+  
+  /* Text style */
+  .text {
+      text-align: center;
+      color: white;
+      font-size: 18px;
+  }
+  
+  /* Form section */
+  form {
+     {% comment %} background-color: #4f70b5; {% endcomment %}
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 400px;
+      box-shadow: 4px 4px 4px rgba(0, 0, 0.4, 0.4),inset 4px 4px 4px rgba(0, 0, 0, 0.4); ;
+      padding: 20px;
+      width: 60%;
+      max-width: none;
+      height: 100%; 
+      min-height: 100vh;
+      
+  }
+  
+  /* Button styles */
+  .btn {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 15px;
+  }
+  
+  .btn-1,
+  .btn-2 {
+      padding: 10px 5px;
+      width: 100%;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #c4c4c4;
+      border-radius: 8px;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+  }
+  
+  .btn-2 {
+      background-color: #4f70b5;
+      color: white;
+  }
+  
+  /* Form field styles */
+  .form-group {
+      margin-bottom: 15px;
+  }
+  
+  .label {
+      font-size: 25px;
+      font-weight: bold;
+      margin-bottom: 20px;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  input[type="date"] {
+      width: 100%;
+      height: 70px;
+      border-radius: 8px;
+      outline: none;
+      border: 2px solid #c4c4c4;
+      padding: 0 30px;
+      box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: space-between; /* Align buttons at each end of the container */
+    margin-top: 20px; /* Adjust as needed */
+    display: flex;
+  
+}
+  /* Button style */
+  button {
+      margin-top: 15px;
+      width: 45%; 
+      height: 50px;
+      background-color: #149954;
+      border: 6px solid  #149954;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 23px; 
+      cursor: pointer;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      transition: all 0.1s ease;
+  }
+  
+  button:hover {
+      opacity: 0.8;
+  }
+  
+  /* Media queries for responsiveness */
+  @media (max-width: 768px) {
+      .container {
+          flex-direction: column;
+          align-items: center;
+      }
+      .content {
+          width: 100%;
+          padding: 50px;
+          text-align: center;
+      }
+      form {
+          margin: 20px auto;
+          padding: 50px;
+      }
+      button {
+          margin: 20px auto;
+      }
+  }
+  /* Form field styles */
+  textarea[name="details"] {
+      width: 100%;
+      height: 150px;
+      border-radius: 8px;
+      outline: none;
+      border: 2px solid #c4c4c4;
+      padding: 12px 20px;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      resize: none;
+  }
+
+  .m-select-pills-pill {
+      display: inline-block;
+      margin: 8px;
+      padding: 25px 30px;
+      border-radius: 50%; /* تجعل الأزرار دائرية */
+      background-color: #149954;
+      color: #070707;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  }
+  
+  .m-select-pills-pill:hover {
+      background-color: #4f70b5;
+  }
+  .error {
+      color: red;
+  }
+  .has-error input[type="text"],
+  .has-error textarea,
+  .has-error select {
+      border-color: red;
+  }
+  #addPicturesSection {
+      display: none; /* Start with hiding */
+    }
+    
+    #addPicturesSection.active {
+      display: block; /* Show when it has the active class */
+    }
+    .image-container {
+      width: 850px; /* Adjust the width as needed */
+      height: 400px; /* Adjust the height as needed */
+      border: 2px dashed #ccc; /* Border style */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden; /* Hide overflow content */
+  }
+  
+  .image-container img {
+      max-width: 100%; /* Ensure the image fits inside the container */
+      max-height: 100%; /* Ensure the image fits inside the container */
+  }
+  .section {
+      display: none;
+  }
+  
+  .section.active {
+      display: block;
+  }
+  #section1 #prevBtn {
+    display: none; 
+}
+
+</style>
+</head>
+
+<body>
+<div class="modal" id="createProjectModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="content">
+              <div class="logo">
+                <img src="https://cdn-icons-png.freepik.com/256/12357/12357114.png?ga=GA1.2.904843486.1702734146&semt=ais_hybrid" alt="Map of Palestine">
+              </div>
+        
+              <div class="image"></div>
+        
+              <div class="text">
+                Free Palestine & Free  <br>
+                Free Palestine!
+              </div>
+          </div>
+          <form id="projectForm" method="post" action="{% url 'create_project' user_id=user_id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+          <div class="form-group">
+            {{ form.title.label }}
+            {{ form.title }}
+            {% if form.title.errors %}
+            <div class="error">{{ form.title.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.details.label }}
+            {{ form.details }}
+            {% if form.details.errors %}
+            <div class="error">{{ form.details.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.current_fund.label }}
+            {{ form.current_fund }}
+            {% if form.current_fund.errors %}
+            <div class="error">{{ form.current_fund.errors }}</div>
+        {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.total_target.label }}
+            {{ form.total_target }}
+            {% if form.total_target.errors %}
+            <div class="error">{{ form.total_target.errors }}</div>
+        {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.start_date.label }}
+            {{ form.start_date }}
+            {% if form.start_date.errors %}
+            <div class="error">{{ form.start_date.errors }}</div>
+          {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.end_date.label }}
+            {{ form.end_date }}
+            {% if form.end_date.errors %}
+            <div class="error">{{ form.end_date.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div>
+          <p>What best describes why you're fundraising?</p>
+      </div>
+      <div class="m-select-pills-container">
+        {% for category in form.category.field.queryset %}
+        <label class="m-select-pills-pill" for="categoryId-{{category.id}}">
+            <input type="radio" name="{{ form.category.html_name }}" value="{{category.id}} " id="categoryId-{{category.id}}" {% if value == form.category.value %}checked{% endif %}>
+            {{ category.name }}
+        </label>
+    {% endfor %}
+    {% if form.category.errors %}
+        <div class="error" style="color: red;">{{ form.category.errors }}</div>
+    {% endif %}
+          
+      </div>
+      
+      <!-- Displaying tags similar to category -->
+
+      <div>
+        <p>Select tags:</p>
+    </div>
+    <div class="m-select-pills-container">
+      {% for tag in form.tags.field.queryset %}
+      <label class="m-select-pills-pill" for="tagId-{{ tag.id }}">
+          <input type="checkbox" name="{{ form.tags.html_name }}" value="{{ tag.id }}" id="tagId-{{ tag.id }}" {% if tag.pk in form.tags.value %}checked{% endif %}>
+          {{ tag.name }}
+      </label>
+  {% endfor %}
+  {% if form.tags.errors %}
+      <div class="error" style="color: red;">{{ form.tags.errors }}</div>
+  {% endif %}
+  
+  
+    </div>
+
+    <div class="form-group">
+      <label for="images">Upload Pictures:</label>
+      <input type="file" name="images" id="images" multiple>
+    </div>
+
+    <button id="btn" type="submit">Sumbit</button>
+
+  </form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+{% endblock %}

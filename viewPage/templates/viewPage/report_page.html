@@ -1,0 +1,69 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"> <!-- SweetAlert2 CSS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Include SweetAlert library -->
+
+<style>
+    
+    textarea#id_reason {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid green; /* Set default border color to green */
+      resize: vertical;
+      margin-top: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+    }
+
+    textarea#id_reason:focus {
+      border-color: green; 
+      outline: none; 
+    }
+
+    /* Form container styles */
+    .form-container {
+      background-color: #f8f9fa; 
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<h3>Report Page</h3>
+<p>Report the project here.</p>
+
+
+<div class="form-container">
+  <form id="reportForm" class="needs-validation" method="POST" action="{% url 'report_page' project_id=project_id user_id=user_id %}" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="report_type" value="project"> 
+    <div class="form-group">
+        <label for="id_reason">Reason:</label>
+        {{ report_form.reason }}
+        <div class="invalid-feedback">Please provide a reason for the report.</div>
+    </div>
+    <button type="submit" class="btn btn-primary" style="background-color: green;">Submit Report</button>
+  </form>
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.getElementById('reportForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        if (this.checkValidity() === false) {
+            event.stopPropagation();
+        } else {
+            
+            Swal.fire({
+              icon: 'success',
+              title: 'Report submitted successfully!',
+              showConfirmButton: false,
+              timer: 3000
+            });
+        }
+        this.classList.add('was-validated');
+    });
+</script>
+{% endblock %}

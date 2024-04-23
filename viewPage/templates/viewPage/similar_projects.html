@@ -1,0 +1,145 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: monospace;
+    }
+    
+   
+    
+    body{
+        height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #F4F4F4; 
+      background-image: url("{% static 'mainApp/img/olive.jpg' %}");
+      position: relative;
+      background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+    }
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 15, 8, 0.5); /* Adjust the alpha value to control the opacity */
+    }
+    .card-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top:30px;
+    }
+    
+    .card{
+      border-radius: 20px;
+      height: 500px;
+      width: 400px; 
+      background-color: white;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+       transition: box-shadow 0.3s ease-in-out; 
+      margin: 30px; 
+    }
+    
+    .card:hover {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+    
+    .card img{
+      height: 70%;
+      width: 100%;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 20px;
+      position: relative;
+    }
+    
+    .card h1{
+      font-size: 24px;
+      margin-top: 12px;
+      color: black; 
+    }
+    
+    .card p{
+      font-size: 16px;
+      margin-bottom: 20px;
+      color: black; 
+    }
+    
+    .card h5{
+      font-size: 25px;
+      color: #AA0000;
+      margin-bottom: 10px;
+    }
+    
+    .btn-primary {
+      background-color:#149954;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+    .btn-primary:hover{
+        background-color:#0d6437;
+    }
+    #target{
+        font-size:22px;!important
+    }
+
+</style>
+
+<div class="overlay"></div>
+
+{% if similar_projects %}
+<div class="card-container">
+  {% for project in similar_projects %}
+  <div class="card">
+    <div id="carouselExampleIndicators{{ project.id }}" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        {% for picture in project.images.all %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <img src="{{ picture.image.url }}" alt="Slider Image" class="d-block w-100" style="height: 300px;">
+        </div>
+        {% endfor %}
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleIndicators{{ project.id }}" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators{{ project.id }}" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+    <h5>{{ project.title }}</h5>
+    <p>{{ project.details }}</p>
+    <p id="target">Total Target:${{ project.total_target }}</p>
+        <a type="submit" class="btn btn-primary" href="{% url 'project_detail' user_id=user_id.id  project_id=project.id %}" >View Project</a>
+  </div>      
+
+  {% endfor %}
+</div>
+{% else %}
+<p>No similar projects found.</p>
+{% endif %}
+
+{% endblock %}
